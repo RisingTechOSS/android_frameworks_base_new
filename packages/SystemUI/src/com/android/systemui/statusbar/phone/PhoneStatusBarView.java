@@ -22,6 +22,7 @@ import static com.android.systemui.Flags.truncatedStatusBarIconsFix;
 import android.annotation.Nullable;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Insets;
 import android.graphics.Rect;
 import android.inputmethodservice.InputMethodService;
@@ -56,6 +57,7 @@ import com.android.systemui.shared.rotation.RotationButtonController;
 import com.android.systemui.statusbar.CommandQueue;
 import com.android.systemui.statusbar.CommandQueue.Callbacks;
 import com.android.systemui.statusbar.phone.userswitcher.StatusBarUserSwitcherContainer;
+import com.android.systemui.statusbar.policy.Offset;
 import com.android.systemui.statusbar.window.StatusBarWindowController;
 import com.android.systemui.user.ui.binder.StatusBarUserChipViewBinder;
 import com.android.systemui.user.ui.viewmodel.StatusBarUserChipViewModel;
@@ -99,6 +101,8 @@ public class PhoneStatusBarView extends FrameLayout implements Callbacks, TunerS
     private Gefingerpoken mTouchEventHandler;
     private int mDensity;
     private float mFontScale;
+    @Nullable
+    private ViewGroup mStatusBarContents = null;
 
     /**
      * Draw this many pixels into the left/right side of the cutout to optimally use the space
@@ -169,12 +173,22 @@ public class PhoneStatusBarView extends FrameLayout implements Callbacks, TunerS
         StatusBarUserChipViewBinder.bind(container, viewModel);
     }
 
+    public void offsetStatusBar(Offset offset) {
+        if (mStatusBarContents == null) {
+            return;
+        }
+        mStatusBarContents.setTranslationX(offset.getX());
+        mStatusBarContents.setTranslationY(offset.getY());
+        invalidate();
+    }
+
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
         mBattery = findViewById(R.id.battery);
         mClockController = new ClockController(getContext(), this);
         mCutoutSpace = findViewById(R.id.cutout_space_view);
+        mStatusBarContents = (ViewGroup) findViewById(R.id.status_bar_contents);
 
         updateResources();
     }
@@ -390,7 +404,7 @@ public class PhoneStatusBarView extends FrameLayout implements Callbacks, TunerS
     }
 
     private void updatePaddings() {
-        findViewById(R.id.status_bar_contents).setPaddingRelative(
+        mStatusBarContents.setPaddingRelative(
                 mStatusBarPaddingLeft,
                 mStatusBarPaddingTop,
                 mStatusBarPaddingRight,

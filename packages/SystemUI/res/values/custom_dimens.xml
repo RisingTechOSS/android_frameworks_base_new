@@ -129,4 +129,7 @@
     <dimen name="qs_controls_widgets_container_margin_end">0dp</dimen>
     <dimen name="qs_slider_swipe_threshold_dp">40dp</dimen>
     <dimen name="qs_controls_tile_corner_radius">100dp</dimen>
+
+    <!-- Maximum vertical offset of statusbar for burn-in protection -->
+    <dimen name="status_bar_offset_max_y">4dp</dimen>
 </resources>
