@@ -5542,5 +5542,9 @@
   <java-symbol type="drawable" name="ic_zen_mode_type_schedule_time" />
   <java-symbol type="drawable" name="ic_zen_mode_type_theater" />
   <java-symbol type="drawable" name="ic_zen_mode_type_unknown" />
+	  
+  <!-- Whether to cleanup fingerprints upon connection to the daemon and when
+       user switches -->
+    <java-symbol type="bool" name="config_cleanupUnusedFingerprints" />
 
 </resources>
