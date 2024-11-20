@@ -53,6 +53,7 @@ import com.android.internal.app.AlertActivity;
 import com.android.internal.app.AlertController;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -255,8 +256,14 @@ public final class RingtonePickerActivity extends AlertActivity implements
                 p.mTitle = getString(com.android.internal.R.string.ringtone_picker_title);
             }
         } else {
-            // Make sure intents don't inject HTML elements.
-            p.mTitle = Html.escapeHtml(p.mTitle.toString());
+            Locale currentLocale = Locale.getDefault();
+            if ("ja".equals(currentLocale.getLanguage())) {
+                // avoid escaping on Japanese language, this results to broken text
+                p.mTitle = p.mTitle.toString();
+            } else {
+                // Make sure intents don't inject HTML elements.
+                p.mTitle = Html.escapeHtml(p.mTitle.toString());
+            }
         }
 
         setupAlert();
