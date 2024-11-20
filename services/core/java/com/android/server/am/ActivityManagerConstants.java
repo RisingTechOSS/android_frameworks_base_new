@@ -2059,6 +2059,7 @@ final class ActivityManagerConstants extends ContentObserver {
         CUR_TRIM_EMPTY_PROCESSES = rawMaxEmptyProcesses / 2;
         CUR_TRIM_CACHED_PROCESSES = (Integer.min(CUR_MAX_CACHED_PROCESSES, MAX_CACHED_PROCESSES)
                     - rawMaxEmptyProcesses) / 3;
+        updateMaxPhantomProcesses();
     }
 
     private void updateProactiveKillsEnabled() {
@@ -2192,13 +2193,8 @@ final class ActivityManagerConstants extends ContentObserver {
     }
 
     private void updateMaxPhantomProcesses() {
-        final int oldVal = MAX_PHANTOM_PROCESSES;
-        MAX_PHANTOM_PROCESSES = DeviceConfig.getInt(
-                DeviceConfig.NAMESPACE_ACTIVITY_MANAGER, KEY_MAX_PHANTOM_PROCESSES,
-                DEFAULT_MAX_PHANTOM_PROCESSES);
-        if (oldVal > MAX_PHANTOM_PROCESSES) {
-            mService.mHandler.post(mService.mPhantomProcessList::trimPhantomProcessesIfNecessary);
-        }
+        MAX_PHANTOM_PROCESSES = CUR_MAX_CACHED_PROCESSES;
+        mService.mHandler.post(mService.mPhantomProcessList::trimPhantomProcessesIfNecessary);
     }
 
     private void updateMaxServiceConnectionsPerProcess() {
