@@ -503,11 +503,6 @@ public class QSPanel extends LinearLayout {
         switchToParent((View) newLayout, parent, index);
         index++;
 
-        if (mMediaHostView != null && TileUtils.canShowQsWidgets(mContext)) {
-            switchToParent(mMediaHostView, parent, index);
-            index++;
-        }
-
         if (mFooter != null) {
             // Then the footer with the settings
             switchToParent(mFooter, parent, index);
